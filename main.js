@@ -11,6 +11,7 @@ function addTask(){
     checkbox.className = 'checkbox';
 
     let taskValue = document.createElement('span');
+    taskValue.className = 'taskValue'
     taskValue.textContent = taskInput;
 
     let deleteIcon = document.createElement('img');

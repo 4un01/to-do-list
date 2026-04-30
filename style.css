@@ -3,7 +3,7 @@ body{
     padding: 0;
     height: 100vh;
     font-family: sans-serif;
-    background-color: #1c1c1c;
+    background-color: #16171C;
 }
 
 .title{
@@ -47,4 +47,39 @@ body{
    background-color: #00e5a0;
    border: 2px solid #00e5a0;
    border-radius: 55px;
+}
+
+.tasks{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 0 auto;
+    margin-top: 25px;
+    width: 40%;
+    height: fit-content;
+    padding: 10px;
+    background-color: #24252A;
+    opacity: 0.8;
+    border-radius: 55px;
+}
+
+.checkbox{
+    appearance: none;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    border: 2px solid #696969;
+}
+
+
+.taskValue{
+    color: white;
+    font-size: 1.5em;
+    margin: 0 auto 0 auto;
+}
+
+.deleteIcon{
+    height: 30px;
+    width: 30px;
 }
