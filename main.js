@@ -18,6 +18,17 @@ function addOrRemoveTask(){
     deleteIcon.className = 'deleteIcon';
     deleteIcon.src = './images/deleteIcon.svg';
 
+    checkbox.addEventListener('change', () => {
+        if(checkbox.checked){
+          taskValue.style.textDecoration = 'line-through'; 
+          taskValue.style.color = '#696969';
+          taskValue.style.opacity = 0.9; 
+        }
+        else{
+            taskValue.style.textDecoration = 'none';
+        }
+    });
+
     document.body.appendChild(task);
     task.appendChild(checkbox);
     task.appendChild(taskValue);
@@ -26,6 +37,7 @@ function addOrRemoveTask(){
     deleteIcon.addEventListener('click', () => {
         document.body.removeChild(task);
     });
+
 };
 
 add.addEventListener('click', addOrRemoveTask);
