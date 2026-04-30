@@ -21,7 +21,7 @@ body{
     gap: 15px;
 }
 
-.todoMain input{
+#taskInput{
     width: 95%;
     height: 1em;
     border-radius: 55px;
@@ -32,9 +32,13 @@ body{
     color: white;
 }
 
-.todoMain input::placeholder{
+#taskInput::placeholder{
     font-size: 1em;
     color: #696969;
+}
+#taskInput.error::placeholder{
+    font-size: 1em;
+    color: #FF0000;
 }
 
 #add{
@@ -115,7 +119,7 @@ body{
         font-size: 2em;
     }
 
-    .todoMain input{
+    #taskInput{
         width: 85%;
         height: 0.8em;
         font-size: 1em;
