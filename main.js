@@ -1,6 +1,6 @@
 let add = document.getElementById('add');
 
-function addTask(){
+function addOrRemoveTask(){
     let taskInput = document.getElementById('taskInput').value;
     
     let task = document.createElement('div');
@@ -22,6 +22,10 @@ function addTask(){
     task.appendChild(checkbox);
     task.appendChild(taskValue);
     task.appendChild(deleteIcon);
+
+    deleteIcon.addEventListener('click', () => {
+        document.body.removeChild(task);
+    });
 };
 
-add.addEventListener('click', addTask);
+add.addEventListener('click', addOrRemoveTask);
