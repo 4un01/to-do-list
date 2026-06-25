@@ -17,5 +17,7 @@ function switchCards(e){
 
 }
 
+
+
 signupLink.addEventListener('click', switchCards);
 loginLink.addEventListener('click', switchCards);
