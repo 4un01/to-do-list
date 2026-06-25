@@ -16,18 +16,26 @@
 
     <div class="loginContainer">
 
-        <h2>Welcome back</h2>
+        
+        <h2 id="subtitle">Welcome back</h2>
         <p>Log in to your account</p>
+        
 
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email">
+        <div class="emailContainer">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="you@example.com">
+        </div>
 
-        <label for="password">Password</label>
-        <input type="text" name="password" id="password">
+        <div class="psswrdContainer">
+            <label for="password">Password</label>
+            <input type="text" name="password" id="password">
+        </div>
+
+        <button id="loginBtn">Log in</button>
 
         <div class="signupContainer">
             <p>Don't have an account?</p>
-            <a href="" id="signuplink">Sign up</a>
+            <a href="" id="signupLink">Sign up</a>
         </div>
         
     </div>
