@@ -1,0 +1,14 @@
+body{
+    margin: 0 auto;
+    padding: 0;
+    height: 100vh;
+    font-family: sans-serif;
+    background-color: #16171C;
+}
+
+.title{
+    display: flex;
+    justify-content: center;
+    font-size: 3em;
+    color: #00e5a0;
+}
