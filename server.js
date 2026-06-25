@@ -11,7 +11,8 @@ mongoose.connect(connectionStr)
     .catch((e) => {console.log(e.message)});
 
 app.use(express.text());
-app.use(express.json());    
+app.use(express.json());
+app.use(express.static('public'))    
 app.use('/auth', auth);
 
 app.listen(PORT, () => {console.log(`Server is listening on port: ${PORT}`)});

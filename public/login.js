@@ -1,5 +1,7 @@
 const signupLink = document.getElementById('signupLink');
 const loginLink = document.getElementById('loginLink');
+const signupBtn = document.getElementById('signupBtn');
+const loginBtn = document.getElementById('loginBtn'); 
 
 function switchCards(e){
     e.preventDefault();
@@ -17,7 +19,50 @@ function switchCards(e){
 
 }
 
+function getLoginData(){
+    const email = document.getElementById('email');
+    const psswrd = document.getElementById('password');
 
+    const user = {
+        email: email.value,
+        password: psswrd.value
+    };
+
+    return user;
+}
+
+async function sendLoginData(){
+    const user = getLoginData();
+    const {email} = user;
+
+    try{
+        const response = await fetch('/auth/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(user)
+        });
+        if(response.ok){
+            const result = await response.text();
+            await loginResult(result, email);
+        }else{
+            throw new Error('user doesnt exist');
+        }
+    }catch(e){
+        alert(e);
+    }
+}
+
+function loginResult(result, email){
+    if(result === 'true'){
+        localStorage.setItem('email', email);
+        window.location.href = '/tasks.html';
+        console.log('test');
+    }else{
+        console.log(result);
+    }
+};
 
 signupLink.addEventListener('click', switchCards);
 loginLink.addEventListener('click', switchCards);
+
+loginBtn.addEventListener('click', sendLoginData);
