@@ -52,4 +52,15 @@ function addOrRemoveTask(){
     
 };
 
+function isInputEmpty(){
+    let taskInput = document.getElementById('taskInput');
+    if(taskInput.value === ''){
+        taskInput.placeholder = 'You must input a task';
+        taskInput.classList.add('error');
+        return true;
+    }else{
+        return false;
+    }
+}
+
 add.addEventListener('click', addOrRemoveTask);
