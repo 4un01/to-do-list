@@ -62,7 +62,53 @@ function loginResult(result, email){
     }
 };
 
+function getSignupData(){
+    const email = document.getElementById('signupEmail');
+    const psswrd = document.getElementById('signupPassword');
+
+    const user = {
+        email: email.value,
+        password: psswrd.value
+    };
+
+    return user;
+}
+
+async function sendSignupData(){
+    const user = getSignupData();
+    const {email} = user;
+
+    try{
+        const response = await fetch('/auth/signup', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(user)
+        });
+        if(response.ok){
+            const result = await response.text();
+            await signupResult(result, email);
+
+        }else{
+            throw new Error('Something went wrong');
+        }
+    }catch(e){
+        console.log(e.message);
+    }
+}
+
+function signupResult(result, email){
+    if(result === 'created'){
+        localStorage.setItem('email', email);
+        window.location.href = '/tasks.html';
+        console.log('success');
+    }else{
+        console.log('result');
+    }
+}
+
+
 signupLink.addEventListener('click', switchCards);
 loginLink.addEventListener('click', switchCards);
 
 loginBtn.addEventListener('click', sendLoginData);
+signupBtn.addEventListener('click', sendSignupData);
