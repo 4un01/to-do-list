@@ -1,16 +1,9 @@
 let add = document.getElementById('add');
 
-function addOrRemoveTask(){
+function addTask(){
     let taskInput = document.getElementById('taskInput');
-    if(taskInput.value === ''){
-        taskInput.placeholder = 'You must input a task';
-        taskInput.classList.add('error');
-        return;
-    }
-    else{
-        taskInput.placeholder = 'Write anything and hit enter to add';
-        taskInput.classList.remove('error');
 
+    if(isInputEmpty()){
         let task = document.createElement('div');
         task.className = 'tasks';
         
@@ -26,41 +19,45 @@ function addOrRemoveTask(){
         deleteIcon.className = 'deleteIcon';
         deleteIcon.src = './images/deleteIcon.svg';
 
-        checkbox.addEventListener('change', () => {
-            if(checkbox.checked){
-            taskValue.style.textDecoration = 'line-through'; 
-            taskValue.style.color = '#696969';
-            taskValue.style.opacity = 0.9; 
-            }
-            else{
-                taskValue.style.textDecoration = 'none';
-                taskValue.style.color = 'white';
-            }
-        });
+        checkbox.addEventListener('change', () => isChecked(checkbox, taskValue));
+        deleteIcon.addEventListener('click', () => deleteTask(task));
 
         document.body.appendChild(task);
         task.appendChild(checkbox);
         task.appendChild(taskValue);
         task.appendChild(deleteIcon);
 
-        deleteIcon.addEventListener('click', () => {
-            document.body.removeChild(task);
-        });
-
         taskInput.value = '';
+
+    }else{
+        return;
     }
-    
-};
+}
 
 function isInputEmpty(){
     let taskInput = document.getElementById('taskInput');
     if(taskInput.value === ''){
         taskInput.placeholder = 'You must input a task';
         taskInput.classList.add('error');
-        return true;
-    }else{
         return false;
+    }else{
+        return true;
     }
 }
 
-add.addEventListener('click', addOrRemoveTask);
+function isChecked(checkbox, taskValue){
+    if(checkbox.checked){
+        taskValue.style.textDecoration = 'line-through'; 
+        taskValue.style.color = '#696969';
+        taskValue.style.opacity = 0.9; 
+    }else{
+            taskValue.style.textDecoration = 'none';
+            taskValue.style.color = 'white';
+    }
+}
+
+function deleteTask(task){
+    document.body.removeChild(task);
+}
+
+add.addEventListener('click', addTask);
