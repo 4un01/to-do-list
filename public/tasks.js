@@ -1,5 +1,12 @@
 let add = document.getElementById('add');
 
+function loggedIn(){
+    const email = localStorage.getItem('email');
+    if(!email){
+        window.location.href = '/';
+    };
+}
+
 function addTask(){
     let taskInput = document.getElementById('taskInput');
 
@@ -60,4 +67,5 @@ function deleteTask(task){
     document.body.removeChild(task);
 }
 
+loggedIn();
 add.addEventListener('click', addTask);
