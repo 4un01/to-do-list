@@ -3,6 +3,6 @@ const {saveToDb} = require('../controllers/taskController');
 
 const router = express.Router();
 
-router.post('save', saveToDb);
+router.post('/save', saveToDb);
 
 module.exports = router;

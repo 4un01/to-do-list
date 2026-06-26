@@ -1,13 +1,13 @@
 let add = document.getElementById('add');
+const email = localStorage.getItem('email');
 
 function loggedIn(){
-    const email = localStorage.getItem('email');
     if(!email){
         window.location.href = '/';
     };
 }
 
-function addTask(){
+async function addTask(){
     let taskInput = document.getElementById('taskInput');
 
     if(isInputEmpty()){
@@ -33,6 +33,8 @@ function addTask(){
         task.appendChild(checkbox);
         task.appendChild(taskValue);
         task.appendChild(deleteIcon);
+
+        await addTaskToDb(taskInput.value);
 
         taskInput.value = '';
 
@@ -65,6 +67,29 @@ function isChecked(checkbox, taskValue){
 
 function deleteTask(task){
     document.body.removeChild(task);
+}
+
+async function addTaskToDb(taskInput){
+
+    const taskData = {
+        email: email,
+        task: taskInput,
+    }
+    try{
+        const response = await fetch('/tasks/save', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(taskData)
+        });
+        if(response.ok){
+            const responseText = await response.text();
+            console.log(responseText);
+        }else{
+            throw new Error('Something went wrong')
+        }
+    }catch(e){
+        console.log(e);
+    }
 }
 
 loggedIn();
