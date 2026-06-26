@@ -50,16 +50,39 @@ function addOrRemoveTask(){
         taskInput.value = '';
     }
     
-};
+}
+
+function addTask(){
+    let taskInput = document.getElementById('taskInput');
+
+    if(isInputEmpty()){
+        let task = document.createElement('div');
+        task.className = 'tasks';
+        
+        let checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'checkbox';
+
+        let taskValue = document.createElement('span');
+        taskValue.className = 'taskValue'
+        taskValue.textContent = taskInput.value;
+
+        let deleteIcon = document.createElement('img');
+        deleteIcon.className = 'deleteIcon';
+        deleteIcon.src = './images/deleteIcon.svg';
+    }else{
+        return;
+    }
+}
 
 function isInputEmpty(){
     let taskInput = document.getElementById('taskInput');
     if(taskInput.value === ''){
         taskInput.placeholder = 'You must input a task';
         taskInput.classList.add('error');
-        return true;
-    }else{
         return false;
+    }else{
+        return true;
     }
 }
 
