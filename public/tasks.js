@@ -43,9 +43,7 @@ function addOrRemoveTask(){
         task.appendChild(taskValue);
         task.appendChild(deleteIcon);
 
-        deleteIcon.addEventListener('click', () => {
-            document.body.removeChild(task);
-        });
+        deleteIcon.addEventListener('click', () => { document.body.removeChild(task)});
 
         taskInput.value = '';
     }
@@ -70,6 +68,8 @@ function addTask(){
         let deleteIcon = document.createElement('img');
         deleteIcon.className = 'deleteIcon';
         deleteIcon.src = './images/deleteIcon.svg';
+
+        checkbox.addEventListener('change', isChecked);
     }else{
         return;
     }
@@ -83,6 +83,17 @@ function isInputEmpty(){
         return false;
     }else{
         return true;
+    }
+}
+
+function isChecked(){
+    if(checkbox.checked){
+        taskValue.style.textDecoration = 'line-through'; 
+        taskValue.style.color = '#696969';
+        taskValue.style.opacity = 0.9; 
+    }else{
+            taskValue.style.textDecoration = 'none';
+            taskValue.style.color = 'white';
     }
 }
 
