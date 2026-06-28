@@ -150,8 +150,18 @@ async function isChecked(checkbox, taskValue, task){
     }
 }
 
-function deleteTask(task){
-    document.body.removeChild(task);
+async function deleteTask(task){
+
+    try{
+        const response = await fetch(`/tasks/${task.dataset.id}`, {method: 'DELETE'});
+        if(response.ok){
+            document.body.removeChild(task);
+        }else{
+            throw new Error('Something went wrong in the deleteTask function');
+        }
+    }catch(e){
+        console.log(e);
+    }
 }
 
 async function addTaskToDb(taskInput, task){
