@@ -49,4 +49,17 @@ const isCompleted = async (req, res) => {
     }
 }
 
-module.exports = {saveToDb, getFromDb, isCompleted};
+const deleteFromDb = async (req, res) => {
+    try{
+        const taskId = req.params.id;
+        const user = await User.findOne({'tasks._id': taskId});
+        const task =  await user.tasks.id(taskId);
+        await task.deleteOne();
+        await user.save();
+        res.status(200).send();
+    }catch(e){
+        console.log(e.message)
+    }
+}
+
+module.exports = {saveToDb, getFromDb, isCompleted, deleteFromDb};
