@@ -34,13 +34,24 @@ function displayTask(taskList){
 
         let taskValue = document.createElement('span');
         taskValue.className = 'taskValue'
-        taskValue.textContent = taskItem;
+        taskValue.textContent = taskItem.task;
 
         let deleteIcon = document.createElement('img');
         deleteIcon.className = 'deleteIcon';
         deleteIcon.src = './images/deleteIcon.svg';
 
-        checkbox.addEventListener('change', () => isChecked(checkbox, taskValue));
+        task.dataset.id = taskItem._id;
+
+        if(taskItem.isChecked){
+            taskValue.style.textDecoration = 'line-through'; 
+            taskValue.style.color = '#696969';
+            taskValue.style.opacity = 0.9;
+        }else{
+            taskValue.style.textDecoration = 'none';
+            taskValue.style.color = 'white';
+        }
+
+        checkbox.addEventListener('change', () => isChecked(checkbox, taskValue, task));
         deleteIcon.addEventListener('click', () => deleteTask(task));
 
         document.body.appendChild(task);
@@ -69,7 +80,7 @@ async function addTask(){
         deleteIcon.className = 'deleteIcon';
         deleteIcon.src = './images/deleteIcon.svg';
 
-        checkbox.addEventListener('change', () => isChecked(checkbox, taskValue));
+        checkbox.addEventListener('change', () => isChecked(checkbox, taskValue, task));
         deleteIcon.addEventListener('click', () => deleteTask(task));
 
         document.body.appendChild(task);
@@ -77,7 +88,7 @@ async function addTask(){
         task.appendChild(taskValue);
         task.appendChild(deleteIcon);
 
-        await addTaskToDb(taskInput.value);
+        await addTaskToDb(taskInput.value, task);
 
         taskInput.value = '';
 
@@ -97,14 +108,45 @@ function isInputEmpty(){
     }
 }
 
-function isChecked(checkbox, taskValue){
+async function isChecked(checkbox, taskValue, task){
     if(checkbox.checked){
-        taskValue.style.textDecoration = 'line-through'; 
-        taskValue.style.color = '#696969';
-        taskValue.style.opacity = 0.9; 
-    }else{
-            taskValue.style.textDecoration = 'none';
-            taskValue.style.color = 'white';
+        
+        try{
+            const response = await fetch('/tasks/checked', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email:email, taskCompleted: true, taskId: task.dataset.id})
+            });
+            if(response.ok){
+                taskValue.style.textDecoration = 'line-through'; 
+                taskValue.style.color = '#696969';
+                taskValue.style.opacity = 0.9;
+            }else{
+                throw new Error('Something went wrong in the isChecked method');
+            }
+        }catch(e){
+            console.log(e);
+        }
+
+    }
+    
+    else{
+
+        try{
+            const response = await fetch('/tasks/checked', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email:email, taskCompleted: false, taskId: task.dataset.id})
+            });
+            if(response.ok){
+                taskValue.style.textDecoration = 'none';
+                taskValue.style.color = 'white';
+            }else{
+                throw new Error('Something went wrong in the isChecked method')
+            }
+        }catch(e){
+            console.log(e);
+        }
     }
 }
 
@@ -112,12 +154,13 @@ function deleteTask(task){
     document.body.removeChild(task);
 }
 
-async function addTaskToDb(taskInput){
+async function addTaskToDb(taskInput, task){
 
     const taskData = {
         email: email,
         task: taskInput,
-    }
+        isCompleted: false
+    };
     try{
         const response = await fetch('/tasks/save', {
             method: 'POST',
@@ -125,8 +168,8 @@ async function addTaskToDb(taskInput){
             body: JSON.stringify(taskData)
         });
         if(response.ok){
-            const responseText = await response.text();
-            console.log(responseText);
+            const taskId = await response.json();
+            task.dataset.id = taskId;
         }else{
             throw new Error('Something went wrong')
         }
@@ -136,4 +179,5 @@ async function addTaskToDb(taskInput){
 }
 
 loggedIn();
+console.log(email);
 add.addEventListener('click', addTask);
