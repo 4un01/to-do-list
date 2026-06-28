@@ -33,16 +33,16 @@ const isCompleted = async (req, res) => {
         const {email, taskCompleted, taskId} = req.body;
         if(taskCompleted){
             const user = await User.findOne({email:email});
-            const task = await user.tasks.findById(taskId);
+            const task = await user.tasks.id(taskId);
             task.isChecked = true;
             await user.save();
-            res.status(200);
+            res.status(200).send();
         }else{
             const user = await User.findOne({email:email});
-            const task = await user.tasks.findById(taskId);
+            const task = await user.tasks.id(taskId);
             task.isChecked = false;
             await user.save();
-            res.status(200);
+            res.status(200).send();
         }
     }catch(e){
         console.log(e.message);

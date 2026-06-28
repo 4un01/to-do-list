@@ -40,6 +40,17 @@ function displayTask(taskList){
         deleteIcon.className = 'deleteIcon';
         deleteIcon.src = './images/deleteIcon.svg';
 
+        task.dataset.id = taskItem._id;
+
+        if(taskItem.isChecked){
+            taskValue.style.textDecoration = 'line-through'; 
+            taskValue.style.color = '#696969';
+            taskValue.style.opacity = 0.9;
+        }else{
+            taskValue.style.textDecoration = 'none';
+            taskValue.style.color = 'white';
+        }
+
         checkbox.addEventListener('change', () => isChecked(checkbox, taskValue, task));
         deleteIcon.addEventListener('click', () => deleteTask(task));
 
@@ -103,7 +114,7 @@ async function isChecked(checkbox, taskValue, task){
         try{
             const response = await fetch('/tasks/checked', {
                 method: 'POST',
-                headers: {'Content-Type': 'text/plain'},
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({email:email, taskCompleted: true, taskId: task.dataset.id})
             });
             if(response.ok){
@@ -124,7 +135,7 @@ async function isChecked(checkbox, taskValue, task){
         try{
             const response = await fetch('/tasks/checked', {
                 method: 'POST',
-                headers: {'Content-Type': 'text/plain'},
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({email:email, taskCompleted: false, taskId: task.dataset.id})
             });
             if(response.ok){
@@ -168,4 +179,5 @@ async function addTaskToDb(taskInput, task){
 }
 
 loggedIn();
+console.log(email);
 add.addEventListener('click', addTask);
