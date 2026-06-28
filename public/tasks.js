@@ -97,14 +97,45 @@ function isInputEmpty(){
     }
 }
 
-function isChecked(checkbox, taskValue){
+async function isChecked(checkbox, taskValue){
     if(checkbox.checked){
-        taskValue.style.textDecoration = 'line-through'; 
-        taskValue.style.color = '#696969';
-        taskValue.style.opacity = 0.9; 
-    }else{
-            taskValue.style.textDecoration = 'none';
-            taskValue.style.color = 'white';
+        
+        try{
+            const response = await fetch('/tasks/checked', {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: 'true'
+            });
+            if(response.ok){
+                taskValue.style.textDecoration = 'line-through'; 
+                taskValue.style.color = '#696969';
+                taskValue.style.opacity = 0.9;
+            }else{
+                throw new Error('Something went wrong in the isChecked method');
+            }
+        }catch(e){
+            console.log(e);
+        }
+
+    }
+    
+    else{
+
+        try{
+            const response = await fetch('/tasks/checked', {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: 'false'
+            });
+            if(response.ok){
+                taskValue.style.textDecoration = 'none';
+                taskValue.style.color = 'white';
+            }else{
+                throw new Error('Something went wrong in the isChecked method')
+            }
+        }catch(e){
+            console.log(e);
+        }
     }
 }
 
