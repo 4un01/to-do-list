@@ -2,11 +2,16 @@ const User = require('../models/users');
 
 const saveToDb = async (req, res) => {
     try{
-        const {email, task} = req.body;
+        const {email, task, isCompleted} = req.body;
+        const taskData = {
+            task: task,
+            isChecked: isCompleted
+        };
         const user = await User.findOne({email: email});
-        user.tasks.push(task);
+        user.tasks.push(taskData);
         await user.save();
-        res.status(202).send('task added');
+        const taskId = user.tasks[user.tasks.length -1]._id;
+        res.status(202).json(taskId);
     }catch(e){
         console.log(e.message);
         res.status(400).send('failed');
@@ -25,15 +30,17 @@ const getFromDb = async (req, res) => {
 
 const isCompleted = async (req, res) => {
     try{
-        const {email, taskCompleted} = req.body;
-        if(completedTask){
+        const {email, taskCompleted, taskId} = req.body;
+        if(taskCompleted){
             const user = await User.findOne({email:email});
-            user.tasks.isChecked = true;
+            const task = await user.tasks.findById(taskId);
+            task.isChecked = true;
             await user.save();
             res.status(200);
         }else{
             const user = await User.findOne({email:email});
-            user.tasks.isChecked = false;
+            const task = await user.tasks.findById(taskId);
+            task.isChecked = false;
             await user.save();
             res.status(200);
         }

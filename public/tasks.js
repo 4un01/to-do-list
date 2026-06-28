@@ -34,13 +34,13 @@ function displayTask(taskList){
 
         let taskValue = document.createElement('span');
         taskValue.className = 'taskValue'
-        taskValue.textContent = taskItem;
+        taskValue.textContent = taskItem.task;
 
         let deleteIcon = document.createElement('img');
         deleteIcon.className = 'deleteIcon';
         deleteIcon.src = './images/deleteIcon.svg';
 
-        checkbox.addEventListener('change', () => isChecked(checkbox, taskValue));
+        checkbox.addEventListener('change', () => isChecked(checkbox, taskValue, task));
         deleteIcon.addEventListener('click', () => deleteTask(task));
 
         document.body.appendChild(task);
@@ -69,7 +69,7 @@ async function addTask(){
         deleteIcon.className = 'deleteIcon';
         deleteIcon.src = './images/deleteIcon.svg';
 
-        checkbox.addEventListener('change', () => isChecked(checkbox, taskValue));
+        checkbox.addEventListener('change', () => isChecked(checkbox, taskValue, task));
         deleteIcon.addEventListener('click', () => deleteTask(task));
 
         document.body.appendChild(task);
@@ -77,7 +77,7 @@ async function addTask(){
         task.appendChild(taskValue);
         task.appendChild(deleteIcon);
 
-        await addTaskToDb(taskInput.value);
+        await addTaskToDb(taskInput.value, task);
 
         taskInput.value = '';
 
@@ -97,14 +97,14 @@ function isInputEmpty(){
     }
 }
 
-async function isChecked(checkbox, taskValue){
+async function isChecked(checkbox, taskValue, task){
     if(checkbox.checked){
         
         try{
             const response = await fetch('/tasks/checked', {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
-                body: JSON.stringify({email:email, taskCompleted: true})
+                body: JSON.stringify({email:email, taskCompleted: true, taskId: task.dataset.id})
             });
             if(response.ok){
                 taskValue.style.textDecoration = 'line-through'; 
@@ -125,7 +125,7 @@ async function isChecked(checkbox, taskValue){
             const response = await fetch('/tasks/checked', {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
-                body: JSON.stringify({email:email, taskCompleted: false})
+                body: JSON.stringify({email:email, taskCompleted: false, taskId: task.dataset.id})
             });
             if(response.ok){
                 taskValue.style.textDecoration = 'none';
@@ -143,12 +143,13 @@ function deleteTask(task){
     document.body.removeChild(task);
 }
 
-async function addTaskToDb(taskInput){
+async function addTaskToDb(taskInput, task){
 
     const taskData = {
         email: email,
         task: taskInput,
-    }
+        isCompleted: false
+    };
     try{
         const response = await fetch('/tasks/save', {
             method: 'POST',
@@ -156,8 +157,8 @@ async function addTaskToDb(taskInput){
             body: JSON.stringify(taskData)
         });
         if(response.ok){
-            const responseText = await response.text();
-            console.log(responseText);
+            const taskId = await response.json();
+            task.dataset.id = taskId;
         }else{
             throw new Error('Something went wrong')
         }
