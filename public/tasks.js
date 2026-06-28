@@ -104,7 +104,7 @@ async function isChecked(checkbox, taskValue){
             const response = await fetch('/tasks/checked', {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
-                body: 'true'
+                body: JSON.stringify({email:email, taskCompleted: true})
             });
             if(response.ok){
                 taskValue.style.textDecoration = 'line-through'; 
@@ -125,7 +125,7 @@ async function isChecked(checkbox, taskValue){
             const response = await fetch('/tasks/checked', {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
-                body: 'false'
+                body: JSON.stringify({email:email, taskCompleted: false})
             });
             if(response.ok){
                 taskValue.style.textDecoration = 'none';

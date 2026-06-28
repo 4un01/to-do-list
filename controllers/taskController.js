@@ -23,4 +23,23 @@ const getFromDb = async (req, res) => {
     }
 }
 
-module.exports = {saveToDb, getFromDb};
+const isCompleted = async (req, res) => {
+    try{
+        const {email, taskCompleted} = req.body;
+        if(completedTask){
+            const user = await User.findOne({email:email});
+            user.tasks.isChecked = true;
+            await user.save();
+            res.status(200);
+        }else{
+            const user = await User.findOne({email:email});
+            user.tasks.isChecked = false;
+            await user.save();
+            res.status(200);
+        }
+    }catch(e){
+        console.log(e.message);
+    }
+}
+
+module.exports = {saveToDb, getFromDb, isCompleted};
