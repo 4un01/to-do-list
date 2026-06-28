@@ -1,25 +1,25 @@
 let add = document.getElementById('add');
 const email = localStorage.getItem('email');
 
-function loggedIn(){
+async function loggedIn(){
     if(!email){
         window.location.href = '/';
-    };
+    }else{
+        await getTasksFromDb();
+    }
 }
 
-async function getTasks(){
-    if(loggedIn()){
-        try{
-            const response = await fetch(`/tasks/:${email}`);
-            if(response.ok){
-                const taskList = await response.json();
-                await displayTask(taskList);
-            }
-        }catch(e){
-            console.log(e);
+async function getTasksFromDb(){
+    try{
+        const response = await fetch(`/tasks/${email}`);
+        if(response.ok){
+            const taskList = await response.json();
+            await displayTask(taskList);
+        }else{
+            throw new Error('Something went wrong in the getTasksFromDb function')
         }
-    }else{
-        return;
+    }catch(e){
+        console.log(e);
     }
 }
 
