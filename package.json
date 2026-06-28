@@ -21,6 +21,6 @@
   "homepage": "https://github.com/4un01/to-do-list#readme",
   "dependencies": {
     "express": "^5.2.1",
-    "mongoose": "^9.7.2"
+    "mongoose": "^9.7.3"
   }
 }

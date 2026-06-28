@@ -13,4 +13,14 @@ const saveToDb = async (req, res) => {
     }
 };
 
-module.exports = {saveToDb};
+const getFromDb = async (req, res) => {
+    try{
+        const email = req.params.email;
+        const user = await User.findOne({email:email});
+        res.status(200).json(user.tasks);
+    }catch(e){
+        console.log(e.message);
+    }
+}
+
+module.exports = {saveToDb, getFromDb};

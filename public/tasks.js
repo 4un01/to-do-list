@@ -1,10 +1,53 @@
 let add = document.getElementById('add');
 const email = localStorage.getItem('email');
 
-function loggedIn(){
+async function loggedIn(){
     if(!email){
         window.location.href = '/';
-    };
+    }else{
+        await getTasksFromDb();
+    }
+}
+
+async function getTasksFromDb(){
+    try{
+        const response = await fetch(`/tasks/${email}`);
+        if(response.ok){
+            const taskList = await response.json();
+            await displayTask(taskList);
+        }else{
+            throw new Error('Something went wrong in the getTasksFromDb function')
+        }
+    }catch(e){
+        console.log(e);
+    }
+}
+
+function displayTask(taskList){
+    taskList.forEach(taskItem => {
+        let task = document.createElement('div');
+        task.className = 'tasks';
+        
+        let checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'checkbox';
+
+        let taskValue = document.createElement('span');
+        taskValue.className = 'taskValue'
+        taskValue.textContent = taskItem;
+
+        let deleteIcon = document.createElement('img');
+        deleteIcon.className = 'deleteIcon';
+        deleteIcon.src = './images/deleteIcon.svg';
+
+        checkbox.addEventListener('change', () => isChecked(checkbox, taskValue));
+        deleteIcon.addEventListener('click', () => deleteTask(task));
+
+        document.body.appendChild(task);
+        task.appendChild(checkbox);
+        task.appendChild(taskValue);
+        task.appendChild(deleteIcon);
+    });
 }
 
 async function addTask(){
