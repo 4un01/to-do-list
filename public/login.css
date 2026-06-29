@@ -181,3 +181,46 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+@media(max-width: 768px){
+    .title{
+        font-size: 2em;
+    }
+    
+    .loginContainer{
+        width: auto;
+        margin: 20px;
+    }
+    #email{
+        width: 297px;
+    }
+    #password{
+        width: 297px;
+    }
+    #loginBtn{
+        width: 315px;
+    }
+    .changeToSignup{
+        width: 100%;
+    }
+
+    .signupContainer{
+        width: auto;
+        margin: 20px;
+    }
+    #signupEmail{
+        width: 297px;
+    }
+    #signupPassword{
+        width: 297px;
+    }
+    #confirmPassword{
+        width: 297px;
+    }
+    #signupBtn{
+        width: 315px;
+    }
+    .changeToLogin{
+        width: 100%;
+    }
+}
