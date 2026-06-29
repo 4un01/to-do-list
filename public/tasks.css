@@ -1,3 +1,21 @@
+#logoutBtn{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    height: fit-content;
+    width: fit-content;
+    font-size: 1.5rem;
+    background-color: transparent;
+    padding: 5px;
+    font-family: sans-serif;
+    border: 2px solid #696969;
+    border-radius: 5px;
+    color: #00e5a0;
+    cursor: pointer;
+}
+#logoutBtn:hover{
+    background-color: rgba(255, 255, 255, 0.1);
+}
 
 .todoMain{
     display: flex;
