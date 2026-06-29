@@ -1,4 +1,5 @@
 let add = document.getElementById('add');
+const logoutBtn = document.getElementById('logoutBtn');
 const email = localStorage.getItem('email');
 
 async function loggedIn(){
@@ -7,6 +8,12 @@ async function loggedIn(){
     }else{
         await getTasksFromDb();
     }
+}
+
+function logout(){
+    localStorage.removeItem("email");
+    window.location.href = '/';
+    console.log(localStorage);
 }
 
 async function getTasksFromDb(){
@@ -189,5 +196,5 @@ async function addTaskToDb(taskInput, task){
 }
 
 loggedIn();
-console.log(email);
 add.addEventListener('click', addTask);
+logoutBtn.addEventListener('click', logout);
