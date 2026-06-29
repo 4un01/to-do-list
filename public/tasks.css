@@ -122,7 +122,12 @@
 
 @media(max-width: 768px){
     .title{
+        margin-top: 50px;
         font-size: 2em;
+    }
+
+    #logoutBtn{
+        font-size: 1rem;
     }
 
     #taskInput{

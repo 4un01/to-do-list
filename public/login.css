@@ -66,6 +66,7 @@
     display: flex;
     justify-content: center;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 .changeToSignup{
@@ -167,6 +168,7 @@
     display: flex;
     justify-content: center;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 .changeToLogin{
