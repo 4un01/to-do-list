@@ -60,19 +60,41 @@ function SignupForm({onSwitch}){
     );
 }
 
+async function handleBtnClick(authType, email, psswd){
+    const apiEndpoint = '';
+    const authDetails = {
+        email: email,
+        password: psswd
+    };
+
+    if(authType === 'login'){
+        apiEndpoint = 'login';
+    }else{
+        apiEndpoint = 'signup';
+    };
+
+    try{
+        const response  = await fetch(`/api/auth/${apiEndpoint}`, {
+            method: 'POST',
+            headers: {'ContentType': 'application/json'},
+            body: JSON.stringify(authDetails)
+        });
+        if(response.ok){
+
+        }else{
+            const errJson = await response.json();
+        }
+    }catch(e){
+        alert(e);
+    }
+}
 
 function Auth(){
     const [authPage, setAuthPage] = useState('login');
-
-    const changeAuthPage = (event) => {
-        event.preventDefault();
-        let authPageInp = event.target.textContent.split(' ').join('').toLowerCase();
-        setAuthPage(authPageInp);
-    }
-
     return (
         <div>
             <h1 className={styles.title}>TODO APP</h1>
+            {/*Depending on authPage state, render either login or signup component and pass in a prop called onSwitch which sets the authPage state*/}
             {authPage === 'login' ? <LoginForm onSwitch={setAuthPage}/> : <SignupForm onSwitch={setAuthPage}/>}
         </div>
     );

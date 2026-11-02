@@ -14,7 +14,7 @@ mongoose.connect(connectionStr)
 app.use(express.text());
 app.use(express.json());
 app.use(express.static('public'))    
-app.use('/auth', auth);
-app.use('/tasks', taskRoute);
+app.use('/api/auth', auth);
+app.use('/api/tasks', taskRoute);
 
 app.listen(PORT, () => {console.log(`Server is listening on port: ${PORT}`)});
