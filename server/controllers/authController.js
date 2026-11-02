@@ -3,17 +3,20 @@ const User = require('../models/users');
 const login = async (req, res) => {
     try{
         const {email, password} = req.body;
-        const exists = await User.exists({email: email});
+        const user = await User.findOne({email: email, password: password});
 
-        if(exists){
-            const user = await User.findOne({email: email, password: password})
-            req.session.userId = user._id;
-            res.status(200).send('true');
-        }else{
-            res.status(404).send('false');
+        if(!user){
+            const err = new Error('Invalid email or password');
+            err.status = 401;
+            throw err;
         }
+
+        req.session.userId = user._id;
+        res.status(200).send('true');
+
     }catch(e){
         console.log(e.message);
+        res.status(e.status || 500).json({message: e.message});
     }
 };
 
@@ -28,10 +31,16 @@ const signup = async (req, res) => {
         const user = new User(newUser)
         await user.save();
         req.session.userId = user._id;
-        res.status(202).send('created');
+        res.status(201).send('created');
+
     }catch(e){
         console.log(e.message);
-        res.status(500);
+        if(e.code === 11000){
+            res.status(409).json({messge: 'Email already registered'})
+        }if (e.name === 'ValidationError') {
+            return res.status(400).json({ message: e.message });
+        }
+        res.status(e.status || 500).json({message: e.message});
     }
 }
 

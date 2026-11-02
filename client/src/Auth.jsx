@@ -88,7 +88,7 @@ async function handleBtnClick(authType, email, psswd, confirmPsswd){
             const errJson = await response.json();
         }
     }catch(e){
-        alert(e);
+        alert(e.message);
     }
 };
 
