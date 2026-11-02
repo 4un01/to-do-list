@@ -61,26 +61,20 @@ function SignupForm({onSwitch}){
 }
 
 async function handleBtnClick(authType, email, psswd){
-    const apiEndpoint = '';
     const authDetails = {
         email: email,
         password: psswd
     };
 
-    if(authType === 'login'){
-        apiEndpoint = 'login';
-    }else{
-        apiEndpoint = 'signup';
-    };
-
     try{
-        const response  = await fetch(`/api/auth/${apiEndpoint}`, {
+        const response  = await fetch(`/api/auth/${authType}`, {
             method: 'POST',
             headers: {'ContentType': 'application/json'},
             body: JSON.stringify(authDetails)
         });
         if(response.ok){
-
+            const resTxt = await response.text();
+            alert(resTxt)
         }else{
             const errJson = await response.json();
         }
