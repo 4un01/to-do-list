@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const MongoStore = require('connect-mongo')(session);
 const session = require('express-session');
+const MongoStore = require('connect-mongo').default;
 const auth = require('./routes/auth');
 const taskRoute = require('./routes/taskRoute');
 

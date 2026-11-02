@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import styles from './Login.module.css';
 
-function LoginForm({onSwitch}){
+function LoginForm({onSwitch, page}){
+    const [email, setEmail] = useState('');
+    const [psswd, setPsswd] = useState('');
     return(
         <div className={styles.container}>
                 <h2 className={styles.subtitle}>Welcome back</h2>
@@ -9,16 +11,16 @@ function LoginForm({onSwitch}){
         
 
                 <div className={styles.emailContainer}>
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="email" placeholder="you@example.com" required className={styles.emailInp}/>
+                    <label>Email</label>
+                    <input placeholder="you@example.com" required className={styles.emailInp} onChange={({target}) => setEmail(target.value)} value={email}/>
                 </div>
 
                 <div className={styles.psswrdContainer}>
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" required className={styles.passwordInp}/>
+                    <label>Password</label>
+                    <input required className={styles.passwordInp} onChange={({target}) => setPsswd(target.value)} value={psswd}/>
                 </div>
 
-                <button className={styles.authBtn}>Log in</button>
+                <button className={styles.authBtn} onClick={() => handleBtnClick(page, email, psswd)}>Log in</button>
 
                 <div className={styles.changeAuth}>
                     <p>Don't have an account?</p>
@@ -28,7 +30,10 @@ function LoginForm({onSwitch}){
     ); 
 };
 
-function SignupForm({onSwitch}){
+function SignupForm({onSwitch, page}){
+    const [email, setEmail] = useState('');
+    const [psswd, setPsswd] = useState('');
+    const [confirmPsswd, setConfirmPsswd] = useState('');
     return(
         <div className={styles.container}>
                 <h2 className={styles.subtitle}>Create account</h2>
@@ -36,21 +41,21 @@ function SignupForm({onSwitch}){
         
 
                 <div className={styles.emailContainer}>
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="email" placeholder="you@example.com" required className={styles.emailInp}/>
+                    <label>Email</label>
+                    <input placeholder="you@example.com" required className={styles.emailInp} onChange={({target}) => setEmail(target.value)} value={email}/>
                 </div>
 
                 <div className={styles.psswrdContainer}>
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" required className={styles.passwordInp}/>
+                    <label>Password</label>
+                    <input required className={styles.passwordInp} onChange={({target}) => setPsswd(target.value)} value={psswd}/>
                 </div>
 
                 <div className={styles.psswrdContainer}>
-                    <label for="confirmPassword">Confirm password</label>
-                    <input type="password" name="confirmPassword" id="confirmPassword" required className={styles.passwordInp}/>
+                    <label>Confirm password</label>
+                    <input required className={styles.passwordInp} onChange={({target}) => setConfirmPsswd(target.value)} value={confirmPsswd}/>
                 </div>
 
-                <button className={styles.authBtn}>Sign Up</button>
+                <button className={styles.authBtn} onClick={() => handleBtnClick(page, email, psswd, confirmPsswd)}>Sign Up</button>
 
                 <div className={styles.changeAuth}>
                     <p>Already have an account?</p>
@@ -60,11 +65,15 @@ function SignupForm({onSwitch}){
     );
 }
 
-async function handleBtnClick(authType, email, psswd){
+async function handleBtnClick(authType, email, psswd, confirmPsswd){
     const authDetails = {
         email: email,
         password: psswd
     };
+
+    if(authType === 'signup' && psswd !== confirmPsswd){
+        alert('Passwords do not match');
+    }
 
     try{
         const response  = await fetch(`/api/auth/${authType}`, {
@@ -81,15 +90,18 @@ async function handleBtnClick(authType, email, psswd){
     }catch(e){
         alert(e);
     }
-}
+};
 
 function Auth(){
     const [authPage, setAuthPage] = useState('login');
+    const [email, setEmail] = useState('');
+    const [psswd, setPsswd] = useState('');
+    const [confirmPsswd, setConfirmPsswd] = useState('');
     return (
         <div>
             <h1 className={styles.title}>TODO APP</h1>
             {/*Depending on authPage state, render either login or signup component and pass in a prop called onSwitch which sets the authPage state*/}
-            {authPage === 'login' ? <LoginForm onSwitch={setAuthPage}/> : <SignupForm onSwitch={setAuthPage}/>}
+            {authPage === 'login' ? <LoginForm onSwitch={setAuthPage} page={authPage}/> : <SignupForm onSwitch={setAuthPage} page={authPage}/>}
         </div>
     );
 }
