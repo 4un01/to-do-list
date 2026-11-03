@@ -1,0 +1,68 @@
+.title{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 4em;
+    color: #00e5a0;
+    padding: 15px;
+    margin-top: 5px;
+}
+
+.logoutBtn{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    height: fit-content;
+    width: fit-content;
+    font-size: 1.5rem;
+    background-color: transparent;
+    padding: 5px;
+    font-family: sans-serif;
+    border: 2px solid #696969;
+    border-radius: 5px;
+    color: #00e5a0;
+    cursor: pointer;
+}
+.logoutBtn:hover{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.taskInp{
+    width: 95%;
+    height: 1em;
+    border-radius: 55px;
+    padding: 15px ;
+    border: 2px solid #696969;
+    background-color: transparent;
+    font-size: 1.5em;
+    color: white;
+}
+
+.taskInp::placeholder{
+    font-size: 1em;
+    color: #696969;
+}
+
+.addBtn{
+   width: 40%;
+   height: 2em;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 15px;
+   font-size: 1.5em; 
+   font-family: sans-serif;
+   color: #16171C;
+   cursor: pointer;
+   background-color: #00e5a0;
+   border: 2px solid #00e5a0;
+   border-radius: 55px;
+}
