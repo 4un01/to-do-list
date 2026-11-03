@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import {useNavigate} from 'react-router-dom';
 import styles from './Login.module.css';
 
 function LoginForm({onSwitch, page}){
     const [email, setEmail] = useState('');
     const [psswd, setPsswd] = useState('');
+    const navigate = useNavigate();
     return(
         <div className={styles.container}>
                 <h2 className={styles.subtitle}>Welcome back</h2>
@@ -17,10 +19,10 @@ function LoginForm({onSwitch, page}){
 
                 <div className={styles.psswrdContainer}>
                     <label>Password</label>
-                    <input required className={styles.passwordInp} onChange={({target}) => setPsswd(target.value)} value={psswd}/>
+                    <input type='password' required className={styles.passwordInp} onChange={({target}) => setPsswd(target.value)} value={psswd}/>
                 </div>
 
-                <button className={styles.authBtn} onClick={() => handleBtnClick(page, email, psswd)}>Log in</button>
+                <button className={styles.authBtn} onClick={() => handleBtnClick(page, email, psswd, undefined, navigate)}>Log in</button>
 
                 <div className={styles.changeAuth}>
                     <p>Don't have an account?</p>
@@ -34,6 +36,7 @@ function SignupForm({onSwitch, page}){
     const [email, setEmail] = useState('');
     const [psswd, setPsswd] = useState('');
     const [confirmPsswd, setConfirmPsswd] = useState('');
+    const navigate = useNavigate();
     return(
         <div className={styles.container}>
                 <h2 className={styles.subtitle}>Create account</h2>
@@ -47,15 +50,15 @@ function SignupForm({onSwitch, page}){
 
                 <div className={styles.psswrdContainer}>
                     <label>Password</label>
-                    <input required className={styles.passwordInp} onChange={({target}) => setPsswd(target.value)} value={psswd}/>
+                    <input type='password' required className={styles.passwordInp} onChange={({target}) => setPsswd(target.value)} value={psswd}/>
                 </div>
 
                 <div className={styles.psswrdContainer}>
                     <label>Confirm password</label>
-                    <input required className={styles.passwordInp} onChange={({target}) => setConfirmPsswd(target.value)} value={confirmPsswd}/>
+                    <input type='password' required className={styles.passwordInp} onChange={({target}) => setConfirmPsswd(target.value)} value={confirmPsswd}/>
                 </div>
 
-                <button className={styles.authBtn} onClick={() => handleBtnClick(page, email, psswd, confirmPsswd)}>Sign Up</button>
+                <button className={styles.authBtn} onClick={() => handleBtnClick(page, email, psswd, confirmPsswd, navigate)}>Sign Up</button>
 
                 <div className={styles.changeAuth}>
                     <p>Already have an account?</p>
@@ -65,7 +68,7 @@ function SignupForm({onSwitch, page}){
     );
 }
 
-async function handleBtnClick(authType, email, psswd, confirmPsswd){
+async function handleBtnClick(authType, email, psswd, confirmPsswd, navigate){
     const authDetails = {
         email: email,
         password: psswd
@@ -83,7 +86,9 @@ async function handleBtnClick(authType, email, psswd, confirmPsswd){
         });
         if(response.ok){
             const resTxt = await response.text();
-            alert(resTxt)
+            console.log(resTxt)
+            navigate('/tasks');
+
         }else{
             const errJson = await response.json();
         }
