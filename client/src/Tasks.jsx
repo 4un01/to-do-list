@@ -3,11 +3,15 @@ import styles from './Tasks.module.css';
 import deleteIcon from './assets/deleteIcon.svg'
 
 function TaskBoxes({taskArr}){
+    async function handleDelete(taskId){
+        
+    }
+
     return taskArr.map((task, index) => (
         <div key={index} className={styles.tasks}>
             <input type="checkbox" className={styles.checkbox}/>
-            <span className={styles.taskValue}>{task}</span>
-            <img src={deleteIcon} alt="Delete Icon" className={styles.deleteIcon}/>
+            <span className={styles.taskValue}>{task.task}</span>
+            <img src={deleteIcon} alt="Delete Icon" className={styles.deleteIcon} onClick={() => handleDelete(task.taskId)}/>
         </div>
     ));
 }
@@ -31,8 +35,10 @@ function Tasks(){
             if(!response.ok){
                 const resErrJson = await response.json();
                 alert(resErrJson.message);
+                return;
             }
-            setTasks((prev) => [...prev, taskInp]);
+            const {taskId} = await response.json();
+            setTasks((prev) => [...prev, {task: taskInp, taskId: taskId}]);
             setTaskInp('');
         }catch(e){
             console.log(e.message);

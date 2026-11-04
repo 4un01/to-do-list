@@ -1,10 +1,10 @@
 const express = require('express');
-const {saveToDb, getFromDb, isCompleted, deleteFromDb} = require('../controllers/taskController');
+const {addToDb, getFromDb, isCompleted, deleteFromDb} = require('../controllers/taskController');
 
 const router = express.Router();
 
 router.get('/:email', getFromDb);
-router.post('/add', saveToDb);
+router.post('/add', addToDb);
 router.post('/checked', isCompleted);
 router.delete('/:id', deleteFromDb);
 

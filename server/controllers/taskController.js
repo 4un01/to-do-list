@@ -1,6 +1,6 @@
 const User = require('../models/users');
 
-const saveToDb = async (req, res) => {
+const addToDb = async (req, res) => {
     try{
         const taskObj = req.body;
         const userId = req.session.userId;
@@ -8,7 +8,8 @@ const saveToDb = async (req, res) => {
         const user = await User.findOne({_id: userId});
         user.tasks.push(taskObj);
         await user.save();
-        res.status(202).json({message: 'task added to db'});
+        const taskId = user.tasks[user.tasks.length - 1]._id;
+        res.status(202).json({message: 'task added to db', taskId: taskId});
     }catch(e){
         console.log(e.message);
         res.status(e.status || 500).json(e.message);
@@ -59,4 +60,4 @@ const deleteFromDb = async (req, res) => {
     }
 }
 
-module.exports = {saveToDb, getFromDb, isCompleted, deleteFromDb};
+module.exports = {addToDb, getFromDb, isCompleted, deleteFromDb};
