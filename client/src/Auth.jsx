@@ -81,7 +81,7 @@ async function handleBtnClick(authType, email, psswd, confirmPsswd, navigate){
     try{
         const response  = await fetch(`/api/auth/${authType}`, {
             method: 'POST',
-            headers: {'ContentType': 'application/json'},
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(authDetails)
         });
         if(response.ok){

@@ -16,8 +16,28 @@ function Tasks(){
     const [taskInp, setTaskInp] = useState('');
     const [tasks, setTasks] = useState([]);
     
-    const handleClick = () => {
-        setTasks((prev) => [...prev, taskInp])
+    async function handleClick(){
+        const taskData = {
+            task: taskInp,
+            isChecked: false
+        }
+
+        try{
+            const response = await fetch('/api/tasks/add', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(taskData)
+            });
+            if(!response.ok){
+                const resErrJson = await response.json();
+                alert(resErrJson.message);
+            }
+            setTasks((prev) => [...prev, taskInp]);
+            setTaskInp('');
+        }catch(e){
+            console.log(e.message);
+            alert('Could not reach the server')
+        }
     }
 
     return(

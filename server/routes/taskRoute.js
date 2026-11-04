@@ -4,7 +4,7 @@ const {saveToDb, getFromDb, isCompleted, deleteFromDb} = require('../controllers
 const router = express.Router();
 
 router.get('/:email', getFromDb);
-router.post('/save', saveToDb);
+router.post('/add', saveToDb);
 router.post('/checked', isCompleted);
 router.delete('/:id', deleteFromDb);
 

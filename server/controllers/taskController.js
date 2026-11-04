@@ -2,19 +2,16 @@ const User = require('../models/users');
 
 const saveToDb = async (req, res) => {
     try{
-        const {email, task, isCompleted} = req.body;
-        const taskData = {
-            task: task,
-            isChecked: isCompleted
-        };
-        const user = await User.findOne({email: email});
-        user.tasks.push(taskData);
+        const taskObj = req.body;
+        const userId = req.session.userId;
+
+        const user = await User.findOne({_id: userId});
+        user.tasks.push(taskObj);
         await user.save();
-        const taskId = user.tasks[user.tasks.length -1]._id;
-        res.status(202).json(taskId);
+        res.status(202).json({message: 'task added to db'});
     }catch(e){
         console.log(e.message);
-        res.status(400).send('failed');
+        res.status(e.status || 500).json(e.message);
     }
 };
 
