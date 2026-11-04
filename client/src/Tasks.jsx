@@ -2,16 +2,12 @@ import {useState} from 'react';
 import styles from './Tasks.module.css';
 import deleteIcon from './assets/deleteIcon.svg'
 
-function TaskBoxes({taskArr}){
-    async function handleDelete(taskId){
-        
-    }
-
+function TaskBoxes({taskArr, onDelete}){
     return taskArr.map((task, index) => (
         <div key={index} className={styles.tasks}>
             <input type="checkbox" className={styles.checkbox}/>
             <span className={styles.taskValue}>{task.task}</span>
-            <img src={deleteIcon} alt="Delete Icon" className={styles.deleteIcon} onClick={() => handleDelete(task.taskId)}/>
+            <img src={deleteIcon} alt="Delete Icon" className={styles.deleteIcon} onClick={() => onDelete(task.taskId)}/>
         </div>
     ));
 }
@@ -46,6 +42,22 @@ function Tasks(){
         }
     }
 
+    async function handleDelete(taskId){
+        try{
+            const response = await fetch(`/api/tasks/${taskId}`, {method: 'DELETE'});
+
+            if(!response.ok){
+                const resErr = await response.json();
+                alert(resErr.message);
+                return;
+            }
+            setTasks((prev) => prev.filter((t) => t.taskId !== taskId));
+
+        }catch(e){
+            console.log(e);
+        }
+    }
+
     return(
         <div>
             <h1 className={styles.title}>TODO APP</h1>
@@ -56,7 +68,7 @@ function Tasks(){
                 <button className={styles.addBtn} onClick={handleClick}>ADD</button>
             </div>
 
-            <TaskBoxes taskArr={tasks}/>
+            <TaskBoxes taskArr={tasks} onDelete={handleDelete}/>
         </div>
     );
 };

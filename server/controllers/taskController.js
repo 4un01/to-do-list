@@ -50,13 +50,14 @@ const isCompleted = async (req, res) => {
 const deleteFromDb = async (req, res) => {
     try{
         const taskId = req.params.id;
-        const user = await User.findOne({'tasks._id': taskId});
-        const task =  await user.tasks.id(taskId);
+        const user = await User.findById(req.session.userId);
+        const task = user.tasks.id(taskId);
         await task.deleteOne();
         await user.save();
         res.status(200).send();
     }catch(e){
-        console.log(e.message)
+        console.log(e.message);
+        res.status(e.status || 500).json({ message: e.message });
     }
 }
 
