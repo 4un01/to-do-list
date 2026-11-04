@@ -66,3 +66,62 @@
    border: 2px solid #00e5a0;
    border-radius: 55px;
 }
+
+.tasks{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 0 auto;
+    margin-top: 25px;
+    width: 40%;
+    height: fit-content;
+    padding: 10px;
+    background-color: #24252A;
+    opacity: 0.8;
+    border-radius: 55px;
+    flex-wrap: wrap;
+    word-break: break-word;
+    box-sizing: border-box;
+}
+
+.checkbox{
+    appearance: none;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    border: 2px solid #696969;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+.checkbox:checked{
+    background-color: #00e5a0;
+    border-color: #00e5a0;
+}
+.checkbox:checked::after{
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    width: 6px;
+    height: 12px;
+    border: 2px solid black;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+}
+
+
+.taskValue{
+    color: white;
+    font-size: 1.5em;
+    flex: 1;
+    word-break: break-word;
+}
+
+.deleteIcon{
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
