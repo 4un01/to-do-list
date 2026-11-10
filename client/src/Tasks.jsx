@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom'
 import styles from './Tasks.module.css';
 import deleteIcon from './assets/deleteIcon.svg'
 
@@ -15,6 +16,33 @@ function TaskBoxes({taskArr, onDelete, onCheck}){
 function Tasks(){
     const [taskInp, setTaskInp] = useState('');
     const [tasks, setTasks] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        async function getData(){
+            try{
+                const response = await fetch(`/api/tasks/getTasks`);
+
+                if(!response.ok){
+                    if(response.status === 401){
+                        navigate('/') 
+                        return;
+                    };
+                    const resErr = await response.json();
+                    alert(resErr);
+                    return;
+                }
+
+                const resJson = await response.json();
+                setTasks(resJson);
+                return;
+            }catch(e){
+                console.log(e.message)
+            }
+        }
+
+        getData();
+    }, []);
     
     async function handleClick(){
         const taskData = {
