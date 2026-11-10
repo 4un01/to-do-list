@@ -2,11 +2,11 @@ import {useState} from 'react';
 import styles from './Tasks.module.css';
 import deleteIcon from './assets/deleteIcon.svg'
 
-function TaskBoxes({taskArr, onDelete}){
+function TaskBoxes({taskArr, onDelete, onCheck}){
     return taskArr.map((task, index) => (
-        <div key={index} className={styles.tasks}>
-            <input type="checkbox" className={styles.checkbox}/>
-            <span className={styles.taskValue}>{task.task}</span>
+        <div key={task.taskId} className={styles.tasks}>
+            <input type="checkbox" className={styles.checkbox} onChange={() => onCheck(task.taskId, !task.isChecked)} checked={task.isChecked}/>
+            <span className={!task.isChecked ? styles.taskValue : styles.taskValueCompleted}>{task.task}</span>
             <img src={deleteIcon} alt="Delete Icon" className={styles.deleteIcon} onClick={() => onDelete(task.taskId)}/>
         </div>
     ));
@@ -34,7 +34,7 @@ function Tasks(){
                 return;
             }
             const {taskId} = await response.json();
-            setTasks((prev) => [...prev, {task: taskInp, taskId: taskId}]);
+            setTasks((prev) => [...prev, {task: taskInp, taskId: taskId, isChecked: false}]);
             setTaskInp('');
         }catch(e){
             console.log(e.message);
@@ -58,6 +58,29 @@ function Tasks(){
         }
     }
 
+    async function handleCheck(taskId, newVal){
+        try{
+            const response = await fetch('/api/tasks/checked', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({taskCompleted: newVal, taskId: taskId})
+            });
+
+            if(!response.ok){
+                const resErr = await response.json();
+                alert(resErr.message);
+                return;
+            }
+
+            setTasks((prev) =>
+                prev.map((t) => (t.taskId === taskId ? {...t, isChecked: newVal} : t))
+            );
+
+        }catch(e){
+            console.log(e.message);
+        }
+    }
+
     return(
         <div>
             <h1 className={styles.title}>TODO APP</h1>
@@ -68,7 +91,7 @@ function Tasks(){
                 <button className={styles.addBtn} onClick={handleClick}>ADD</button>
             </div>
 
-            <TaskBoxes taskArr={tasks} onDelete={handleDelete}/>
+            <TaskBoxes taskArr={tasks} onDelete={handleDelete} onCheck={handleCheck}/>
         </div>
     );
 };
