@@ -21,7 +21,7 @@ const getFromDb = async (req, res) => {
         const userId = req.session.userId;
         if(userId){
             const user = await User.findById(userId);
-            
+
             if(user === null){
                 return res.status(401).json({message: 'user not logged in'})
             }
@@ -79,4 +79,12 @@ const deleteFromDb = async (req, res) => {
     }
 }
 
-module.exports = {addToDb, getFromDb, isCompleted, deleteFromDb};
+const logout = async(req, res) => {
+    req.session.destroy(err => {
+        if(err) return res.status(500).send('Could not log out');
+        res.clearCookie('connect.sid');
+        res.send('Logged out');
+    });
+}
+
+module.exports = {addToDb, getFromDb, isCompleted, deleteFromDb, logout};

@@ -16,6 +16,7 @@ function TaskBoxes({taskArr, onDelete, onCheck}){
 function Tasks(){
     const [taskInp, setTaskInp] = useState('');
     const [tasks, setTasks] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,6 +36,7 @@ function Tasks(){
 
                 const resJson = await response.json();
                 setTasks(resJson);
+                setIsLoading(false);
                 return;
             }catch(e){
                 console.log(e.message)
@@ -44,6 +46,22 @@ function Tasks(){
         getData();
     }, []);
     
+    async function handleLogout(){
+        try{
+            const response = await fetch('/api/tasks/logout', {method: 'POST'});
+
+            if(!response.ok){
+                const resErr = await response.text();
+                alert(resErr);
+                return;
+            };
+
+            return navigate('/');
+        }catch(e){
+            console.log(e.message)
+        }
+    }
+
     async function handleClick(){
         const taskData = {
             task: taskInp,
@@ -109,10 +127,12 @@ function Tasks(){
         }
     }
 
+    if(isLoading) return null;
+
     return(
         <div>
             <h1 className={styles.title}>TODO APP</h1>
-            <button className={styles.logoutBtn}>Log out</button>
+            <button className={styles.logoutBtn} onClick={handleLogout}>Log out</button>
 
             <div className={styles.container}>
                 <input type="text" placeholder="Write anything and hit enter to add" className={styles.taskInp} onChange={({target}) => setTaskInp(target.value)} value={taskInp}/>
