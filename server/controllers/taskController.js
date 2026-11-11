@@ -70,6 +70,11 @@ const deleteFromDb = async (req, res) => {
         const taskId = req.params.id;
         const user = await User.findById(req.session.userId);
         const task = user.tasks.id(taskId);
+        if(!task){
+            const err = new Error('Task doesnt exist');
+            err.status = 404;
+            throw err;
+        };
         await task.deleteOne();
         await user.save();
         res.status(200).send();

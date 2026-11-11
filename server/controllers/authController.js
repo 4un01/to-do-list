@@ -4,6 +4,11 @@ const bc = require('bcryptjs');
 const login = async (req, res) => {
     try{
         const {email, password} = req.body;
+        if(typeof email !== 'string' || typeof password !== 'string'){
+            const err = new Error('invalid input');
+            err.status = 400;
+            throw err;
+        }
         const user = await User.findOne({email: email});
 
         if(!user){
@@ -32,6 +37,11 @@ const login = async (req, res) => {
 const signup = async (req, res) => {
     try{
         const {email, password} = req.body;
+        if(typeof email !== 'string' || typeof password !== 'string'){
+            const err = new Error('invalid input');
+            err.status = 400;
+            throw err;
+        }
         const passwordHash = await bc.hash(password, 10);
         const newUser = {
             email: email,
