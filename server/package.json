@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/4un01/to-do-list#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "connect": "^3.7.0",
     "connect-mongo": "^6.0.0",
     "express": "^5.2.1",

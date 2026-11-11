@@ -1,15 +1,24 @@
 const User = require('../models/users');
+const bc = require('bcryptjs');
 
 const login = async (req, res) => {
     try{
         const {email, password} = req.body;
-        const user = await User.findOne({email: email, password: password});
+        const user = await User.findOne({email: email});
 
         if(!user){
-            const err = new Error('Invalid email or password');
+            const err = new Error('email does not exist');
             err.status = 401;
             throw err;
-        }
+        };
+
+        const isPasswordValid = await bc.compare(password, user.password);
+
+        if(!isPasswordValid){
+            const err = new Error('Password is not valid');
+            err.status = 401;
+            throw err;
+        };
 
         req.session.userId = user._id;
         res.status(200).send('true');
@@ -23,9 +32,10 @@ const login = async (req, res) => {
 const signup = async (req, res) => {
     try{
         const {email, password} = req.body;
+        const passwordHash = await bc.hash(password, 10);
         const newUser = {
             email: email,
-            password: password,
+            password: passwordHash,
             tasks: []
         };
         const user = new User(newUser)

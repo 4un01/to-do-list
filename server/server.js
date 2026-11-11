@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo').default;
-const auth = require('./routes/auth');
+const authRoute = require('./routes/authRoute');
 const taskRoute = require('./routes/taskRoute');
 
 //setting up express server, what port it will be hosted on, the connection string to connect to mongoDB and the session secret key
@@ -31,7 +31,7 @@ app.use(session({
 app.use(express.text());
 app.use(express.json());
 app.use(express.static('public'))    
-app.use('/api/auth', auth);
+app.use('/api/auth', authRoute);
 app.use('/api/tasks', taskRoute);
 
 app.listen(PORT, () => {console.log(`Server is listening on port: ${PORT}`)});
