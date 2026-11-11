@@ -36,7 +36,7 @@ const signup = async (req, res) => {
     }catch(e){
         console.log(e.message);
         if(e.code === 11000){
-            res.status(409).json({messge: 'Email already registered'})
+            return res.status(409).json({message: 'Email already registered'});
         }if (e.name === 'ValidationError') {
             return res.status(400).json({ message: e.message });
         }

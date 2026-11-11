@@ -2,10 +2,11 @@ import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import styles from './Login.module.css';
 
+const navigate = useNavigate();
+
 function LoginForm({onSwitch, page}){
     const [email, setEmail] = useState('');
     const [psswd, setPsswd] = useState('');
-    const navigate = useNavigate();
     return(
         <div className={styles.container}>
                 <h2 className={styles.subtitle}>Welcome back</h2>
@@ -22,7 +23,7 @@ function LoginForm({onSwitch, page}){
                     <input type='password' required className={styles.passwordInp} onChange={({target}) => setPsswd(target.value)} value={psswd}/>
                 </div>
 
-                <button className={styles.authBtn} onClick={() => handleBtnClick(page, email, psswd, undefined, navigate)}>Log in</button>
+                <button className={styles.authBtn} onClick={() => handleBtnClick(page, email, psswd, undefined)}>Log in</button>
 
                 <div className={styles.changeAuth}>
                     <p>Don't have an account?</p>
@@ -36,7 +37,6 @@ function SignupForm({onSwitch, page}){
     const [email, setEmail] = useState('');
     const [psswd, setPsswd] = useState('');
     const [confirmPsswd, setConfirmPsswd] = useState('');
-    const navigate = useNavigate();
     return(
         <div className={styles.container}>
                 <h2 className={styles.subtitle}>Create account</h2>
@@ -58,7 +58,7 @@ function SignupForm({onSwitch, page}){
                     <input type='password' required className={styles.passwordInp} onChange={({target}) => setConfirmPsswd(target.value)} value={confirmPsswd}/>
                 </div>
 
-                <button className={styles.authBtn} onClick={() => handleBtnClick(page, email, psswd, confirmPsswd, navigate)}>Sign Up</button>
+                <button className={styles.authBtn} onClick={() => handleBtnClick(page, email, psswd, confirmPsswd)}>Sign Up</button>
 
                 <div className={styles.changeAuth}>
                     <p>Already have an account?</p>
@@ -68,14 +68,14 @@ function SignupForm({onSwitch, page}){
     );
 }
 
-async function handleBtnClick(authType, email, psswd, confirmPsswd, navigate){
+async function handleBtnClick(authType, email, psswd, confirmPsswd){
     const authDetails = {
         email: email,
         password: psswd
     };
 
     if(authType === 'signup' && psswd !== confirmPsswd){
-        alert('Passwords do not match');
+        return alert('Passwords do not match');
     }
 
     try{
@@ -91,6 +91,7 @@ async function handleBtnClick(authType, email, psswd, confirmPsswd, navigate){
 
         }else{
             const errJson = await response.json();
+            return alert(errJson);
         }
     }catch(e){
         alert(e.message);
@@ -99,9 +100,7 @@ async function handleBtnClick(authType, email, psswd, confirmPsswd, navigate){
 
 function Auth(){
     const [authPage, setAuthPage] = useState('login');
-    const [email, setEmail] = useState('');
-    const [psswd, setPsswd] = useState('');
-    const [confirmPsswd, setConfirmPsswd] = useState('');
+    
     return (
         <div>
             <h1 className={styles.title}>TODO APP</h1>

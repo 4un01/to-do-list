@@ -29,8 +29,9 @@ function Tasks(){
                         navigate('/') 
                         return;
                     };
+                    setIsLoading(false);
                     const resErr = await response.json();
-                    alert(resErr);
+                    alert(resErr.message);
                     return;
                 }
 
@@ -39,7 +40,9 @@ function Tasks(){
                 setIsLoading(false);
                 return;
             }catch(e){
+                setIsLoading(false);
                 console.log(e.message)
+                alert(e.message)
             }
         }
 
@@ -62,7 +65,10 @@ function Tasks(){
         }
     }
 
-    async function handleClick(){
+    async function handleClick(e){
+        e.preventDefault();
+        if(taskInp.trim() === '') return alert('Can not add an empty task');
+
         const taskData = {
             task: taskInp,
             isChecked: false
@@ -134,10 +140,10 @@ function Tasks(){
             <h1 className={styles.title}>TODO APP</h1>
             <button className={styles.logoutBtn} onClick={handleLogout}>Log out</button>
 
-            <div className={styles.container}>
+            <form className={styles.container} onSubmit={handleClick}>
                 <input type="text" placeholder="Write anything and hit enter to add" className={styles.taskInp} onChange={({target}) => setTaskInp(target.value)} value={taskInp}/>
-                <button className={styles.addBtn} onClick={handleClick}>ADD</button>
-            </div>
+                <button className={styles.addBtn}>ADD</button>
+            </form>
 
             <TaskBoxes taskArr={tasks} onDelete={handleDelete} onCheck={handleCheck}/>
         </div>
