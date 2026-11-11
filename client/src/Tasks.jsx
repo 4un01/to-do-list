@@ -81,6 +81,10 @@ function Tasks(){
                 body: JSON.stringify(taskData)
             });
             if(!response.ok){
+                if(response.status === 401){
+                        navigate('/') 
+                        return;
+                    };
                 const resErrJson = await response.json();
                 alert(resErrJson.message);
                 return;
@@ -99,6 +103,10 @@ function Tasks(){
             const response = await fetch(`/api/tasks/${taskId}`, {method: 'DELETE'});
 
             if(!response.ok){
+                if(response.status === 401){
+                        navigate('/') 
+                        return;
+                    };
                 const resErr = await response.json();
                 alert(resErr.message);
                 return;
@@ -119,6 +127,10 @@ function Tasks(){
             });
 
             if(!response.ok){
+                if(response.status === 401){
+                        navigate('/') 
+                        return;
+                    };
                 const resErr = await response.json();
                 alert(resErr.message);
                 return;

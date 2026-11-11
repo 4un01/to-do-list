@@ -5,9 +5,12 @@ const MongoStore = require('connect-mongo').default;
 const authRoute = require('./routes/authRoute');
 const taskRoute = require('./routes/taskRoute');
 const path = require('path');
+const {isUserLoggedIn} = require('./middleware/authMiddleware');
 
 //setting up express server, what port it will be hosted on, the connection string to connect to mongoDB and the session secret key
 const app = express();
+//Says to the express server that theres 1 proxy in front of me trust what it says
+app.set('trust proxy', 1)
 const PORT = process.env.PORT;
 const connectionStr = process.env.MONGO_CONNECTION;
 const sessionSecret = process.env.SESSION_SECRET;
@@ -24,7 +27,9 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        maxAge: 10000 * 60 * 60
+        maxAge: 10000 * 60 * 60,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
     },
     store: MongoStore.create({ client: mongoose.connection.getClient() })
 }))
@@ -39,7 +44,7 @@ app.use(express.text());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.use('/api/auth', authRoute);
-app.use('/api/tasks', taskRoute);
+app.use('/api/tasks', isUserLoggedIn, taskRoute);
 // '/{*splat}' is a wild card route that matches to any path, thats why its at the bottom so its a safeguard after all the other routes fail
 app.get('/{*splat}', catchAll);
 
